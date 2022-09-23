@@ -1,0 +1,47 @@
+body {
+    font-family: "Poppins", Geneva, Tahoma, sans-serif
+}
+
+/* --- Class CSS --- */
+
+.nb-stuff {
+    background-color: #915b1d;
+    
+}
+
+.nb-stuff:hover {
+    filter: drop-shadow(1px 1px 1px #cbb7a0);
+    transition: filter 50ms linear 50ms;
+}
+
+/* --- ID CSS --- */
+
+/* --- Underline Animation CSS --- */
+
+.hover-underline-animation {
+    display: inline-block;
+    position: relative;
+    /*color: #0087ca;*/
+  }
+  
+.hover-underline-animation:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #eae6e6;
+    /*transform-origin: bottom right;*/
+    transition: transform 0.35s ease-out;
+}
+  
+.hover-underline-animation:hover:after {
+    transform: scaleX(1);
+    /*transform-origin: bottom left;*/
+}
+
+#navmenu ul li {
+    padding: 0px 20px;
+}
