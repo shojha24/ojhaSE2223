@@ -4,6 +4,29 @@ body {
 
 /* --- Class CSS --- */
 
+.about-author {
+    color:rgb(172, 122, 48);
+}
+
+.author {
+    text-align:center;
+    padding: 10px;
+    
+}
+
+.cardbody {
+    padding: 10px 0px;
+}
+
+.textos {
+    padding: 0px 10px 10px 10px;
+}
+
+.test:hover {
+    filter: drop-shadow(2px 2px 4px #cccccc);
+    transition: filter 50ms linear 50ms;
+}
+
 .nb-stuff {
     background-color: #915b1d;
     
@@ -14,7 +37,49 @@ body {
     transition: filter 50ms linear 50ms;
 }
 
+.showcase {
+    background-color: rgb(172, 122, 48);
+}
+
+.overview-font {
+    font-size: 1em;
+}
+
+.row-extra {
+    border-top: solid 2px white;
+    margin: 0;
+}
+
+.img-stuff {
+    vertical-align: middle;
+}
+
+.icon-white {
+    color: #000;
+}
+
+.row-thing {
+    border: 2px solid white;
+    vertical-align: middle;
+}
+
 /* --- ID CSS --- */
+
+#ovPadLeft {
+    padding-left: 5px;
+}
+
+#ovPadRight {
+    padding-right: 5px;
+}
+
+div#about {
+    margin: auto;
+}
+
+#procedure-block {
+    padding: 20px 0px;
+}
 
 /* --- Underline Animation CSS --- */
 
