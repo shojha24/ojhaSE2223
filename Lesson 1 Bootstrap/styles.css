@@ -64,6 +64,15 @@ img {
     margin: 15px 0px;
 }
 
+.row-thing:hover {
+    filter: drop-shadow(2px 2px 2px #bbbbbb);
+    transition: filter 150ms ease-in 10ms;
+}
+
+.col-sm-5.p-3 img {
+    border: 2px solid #cccccc;
+}
+
 /* --- ID CSS --- */
 
 #ovPadLeft {
