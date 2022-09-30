@@ -2,6 +2,10 @@ body {
     font-family: "Poppins", Geneva, Tahoma, sans-serif
 }
 
+img {
+    border-radius: 20px;
+}
+
 /* --- Class CSS --- */
 
 .about-author {
@@ -55,8 +59,9 @@ body {
 }
 
 .row-thing {
-    border: 1px dotted black;
-    vertical-align: middle;
+    background-color: #dec099;
+    border-radius: 20px;
+    margin: 15px 0px;
 }
 
 /* --- ID CSS --- */
