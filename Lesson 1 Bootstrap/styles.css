@@ -28,7 +28,7 @@ body {
 }
 
 .nb-stuff {
-    background-color: #915b1d;
+    background-color: #784e1d;
     
 }
 
@@ -50,27 +50,27 @@ body {
     margin: 0;
 }
 
-.img-stuff {
-    vertical-align: middle;
-}
-
 .icon-white {
     color: #000;
 }
 
 .row-thing {
-    border: 2px solid white;
+    border: 1px dotted black;
     vertical-align: middle;
 }
 
 /* --- ID CSS --- */
 
 #ovPadLeft {
-    padding-left: 5px;
+    padding-left: 20px;
 }
 
 #ovPadRight {
-    padding-right: 5px;
+    padding-right: 20px;
+}
+
+#img-thing {
+    margin: 0;
 }
 
 div#about {
