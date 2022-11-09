@@ -58,11 +58,6 @@ async function createChart() {
                             size: 20
                         },
                     },
-                    ticks: {
-                        callback: function(val, index){
-                            return index % 2 === 0 ? this.getLabelForValue(val) : '';
-                        }
-                    }
                 },
                 y: {
                     beginAtZero: false,
