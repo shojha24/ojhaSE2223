@@ -1,7 +1,7 @@
 // GRaph CSV with Chart.JS
 
 async function getData() {
-    const response = await fetch("researchData.csv")
+    const response = await fetch("data/researchData.csv")
     const data = await response.text()          //CSV in TEXT format
 
     const table = data.split('\r\n').slice(1);  // split by line and remove 0th row.
