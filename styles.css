@@ -73,6 +73,15 @@ img {
     border: 2px solid #cccccc;
 }
 
+.border {
+    border-radius: 20px;
+    background-color: #e6e6e6;
+}
+
+#showcase2 {
+    background-color: rgb(132, 82, 8);
+}
+
 /* --- ID CSS --- */
 
 #ovPadLeft {
@@ -124,3 +133,35 @@ div#about {
 #navmenu ul li {
     padding: 0px 20px;
 }
+
+/* CSS Stuff */
+
+/* ----------------- Class CSS ----------------- */
+.headerBG{
+    background-color: #e6e6e6;
+}
+
+.footerBG{
+    background-color: #e6e6e6;
+}
+
+.ordered-List-item-font{
+    font-size:22px;
+}
+.overview-font{
+    font-size:min(calc(0.03 * 100vw), 20px);
+}
+
+.signUpForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nbMenuItem{
+    font-size:25px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+/* ----------------- ID CSS ----------------- */
