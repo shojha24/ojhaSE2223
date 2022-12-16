@@ -9,7 +9,7 @@
   // https://firebase.google.com/docs/web/setup#available-libraries
 
   import {getAuth, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-  import {getDatabase, ref, set, update, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+  import {getDatabase, ref, set, update, child, get, remove} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -135,6 +135,48 @@ function getData(userID, trialNum) {
 // Must be an async function because you need to get all the data from FRD
 // before you can process it for a table or graph
 
+async function getDataSet(userID) {
+  
+  let tbody = document.getElementById("tbody-2")
+  let trialNums = []
+  let imgAccs = []
+  let audioAccs = []
+
+  const dbref = ref(db)
+  for (let i = 10; i > 0; i--) {
+  get(child(dbref, 'users/' + userID + `/dataCollection/${i}`))
+  .then((snapshot) => {
+      if (snapshot.exists()) {
+        tbody.insertAdjacentHTML('afterend', `
+        <tr>
+          <td>${i}</td>
+          <td>${snapshot.val()["images"] != null ? JSON.parse(snapshot.val()["images"]["images"]) : "N/A"}</td>
+          <td>${snapshot.val()["audio"] != null ? JSON.parse(snapshot.val()["audio"]["audio"]) : "N/A"}</td>
+        </tr>
+        `)
+        imgAccs.push(snapshot.val()["images"] != null ? JSON.parse(snapshot.val()["images"]["images"]) : "0")
+        audioAccs.push(snapshot.val()["audio"] != null ? JSON.parse(snapshot.val()["audio"]["audio"]) : "0")
+      } else {
+        tbody.insertAdjacentHTML('afterend', `
+        <tr>
+          <td>${i}</td>
+          <td>N/A</td>
+          <td>N/A</td>
+        </tr>
+        `)
+        imgAccs.push("0")
+        audioAccs.push("0")
+      }
+      trialNums.push(i)
+  })
+  .catch((error) => {
+    console.error(error);
+  }
+  );
+  }
+  
+}
+
 
 // Add a item to the table of data
 
@@ -142,6 +184,15 @@ function getData(userID, trialNum) {
 
 // -------------------------Delete a day's data from FRD ---------------------
 
+function deleteData(userID, trialNum, algorithm){
+  remove(ref(db, 'users/' + userID + '/dataCollection/' + trialNum + '/' + algorithm))
+  .then(()=>{
+    alert('Data removed succesfully')
+  })
+  .catch((error)=>{
+    alert('unsuccessful, error: ' + error)
+  })
+}
 
 // --------------------------- Home Page Loading -----------------------------
 
@@ -173,65 +224,104 @@ window.onload = function() {
       welcome.innerText = "Welcome, " + currentUser.firstName;
       signedIn.insertAdjacentHTML('afterend', `
       <div id="showcase2">
-      <div class="pt-3"></div>
-        <div class="container border">
-            <br>
-            <h2>Set (Overwrite) & Update (Replace, Add) Data</h2><br>
+    <div class="pt-3"></div>
+    <div class="container border">
+        <br>
+        <h2>Set (Overwrite) & Update (Replace, Add) Data</h2><br>
 
-            <div class="container dataForm mb-5">
-                <form>
-                    <select class="form-select mb-3" aria-label="Default select example" id="trialNum">
-                        <option selected>Trial #</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <select class="form-select mb-3" aria-label="Default select example" id="algorithm">
-                        <option selected>Dataset used</option>
-                        <option value="images">Images</option>
-                        <option value="audio">Audio</option>
-                    </select>
-                    <input type="number" class="form-control mb-3"
-                        placeholder="Trial Accuracy (%, do not include the sign)" id="accuracy">
-                    <button type="button" id="set" name="set" class="btn btn-outline-primary mb-3 w-100">Set</button>
-                    <button type="button" id="update" name="update"
-                        class="btn btn-outline-secondary mb-3 w-100">Update</button>
-                </form>
-            </div>
-        </div><br>
+        <div class="container dataForm mb-5">
+            <form>
+                <select class="form-select mb-3" aria-label="Default select example" id="trialNum">
+                    <option selected>Trial #</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+                <select class="form-select mb-3" aria-label="Default select example" id="algorithm">
+                    <option selected>Dataset used</option>
+                    <option value="images">Images</option>
+                    <option value="audio">Audio</option>
+                </select>
+                <input type="number" class="form-control mb-3" placeholder="Trial Accuracy (%, do not include the sign)"
+                    id="accuracy">
+                <button type="button" id="set" name="set" class="btn btn-outline-primary mb-3 w-100">Set</button>
+                <button type="button" id="update" name="update"
+                    class="btn btn-outline-secondary mb-3 w-100">Update</button>
+            </form>
+        </div>
+    </div><br>
 
-        <!--Get a single datum -->
-        <div class="container border">
-            <br>
-            <h2>Display a Datum</h2><br>
+    <!--Get a single datum -->
+    <div class="container border">
+        <br>
+        <h2>Display a Datum</h2><br>
 
-            <div class="container dataForm mb-5">
-                <form>
-                    <select class="form-select mb-3" aria-label="Default select example" id="trialReturn">
-                        <option selected>Trial #</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <button type="button" id="get" name="get" class="btn btn-outline-primary mb-3 w-100">get</button>
-                </form>
-            </div>
+        <div class="container dataForm mb-5">
+            <form>
+                <select class="form-select mb-3" aria-label="Default select example" id="trialReturn">
+                    <option selected>Trial #</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+                <button type="button" id="get" name="get" class="btn btn-outline-primary mb-3 w-100">get</button>
+            </form>
+        </div>
 
-            <!-- Table for displaying selected data -->
+        <!-- Table for displaying selected data -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Trial #</th>
+                    <th scope="col">Image Accuracy</th>
+                    <th scope="col">Audio Accuracy</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <p id="trialVal"></p>
+                    </td>
+                    <td>
+                        <p id="imgVal">
+                    </td>
+                    <td>
+                        <p id="audioVal">
+                    </td>
+                </tr>
+                <tr>
+            </tbody>
+        </table>
+    </div><br>
+
+    <!-- Get a Dataset and return as table-->
+    <div class="container border">
+        <br>
+        <h2>Get a Data Set</h2><br>
+
+        <div class="container dataForm mb-5">
+            <form>
+                <button type="button" id="getDataSet" name="getDataSet" class="btn btn-outline-primary mb-3 w-100">Get
+                    Dataset</button>
+            </form>
+        </div>
+
+        <!-- Table for displaying data set -->
+        <div class="container">
             <table class="table">
                 <thead>
                     <tr>
@@ -241,22 +331,42 @@ window.onload = function() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <p id="trialVal"></p>
-                        </td>
-                        <td>
-                            <p id="imgVal">
-                        </td>
-                        <td>
-                            <p id="audioVal">
-                        </td>
-                    </tr>
-                    <tr>
+                    <tr id="tbody-2"><td></td><td></td><td></td></tr>
                 </tbody>
             </table>
-        </div><br>
         </div>
+    </div><br>
+
+    <div class="container border">
+    <br><h2>Delete Data</h2><br>
+    
+    <div class="container dataForm mb-5">
+        <form>
+            <select class="form-select mb-3" aria-label="Default select example" id="delTrial">
+                <option selected>Trial #</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <select class="form-select mb-3" aria-label="Default select example" id="delAlg">
+                <option selected>Dataset Used</option>
+                <option value="images">Images</option>
+                <option value="audio">Audio</option>
+            </select>
+            <button type = "button" id="delete" name="delete" class="btn btn-outline-primary mb-3 w-100">Delete</button>
+        </form>       
+    </div>
+</div><br>
+
+
+</div>
       `);
       signedIn.remove();
 
@@ -279,6 +389,21 @@ window.onload = function() {
         const trialNum = document.getElementById('trialReturn').value;
         getData(currentUser.uid, trialNum);
       }
+
+      document.getElementById('getDataSet').onclick = function() {
+        getDataSet(currentUser.uid);
+      }
+
+      document.getElementById('delete').onclick = function(){
+        const trial = document.getElementById('delTrial').value;
+        const algorithm = document.getElementById('delAlg').value;
+        const userID = currentUser.uid;
+    
+        deleteData(userID, trial, algorithm)
+      }
+    
+
+      
 
     }
 
