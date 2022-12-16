@@ -39,7 +39,7 @@ let userLink = document.getElementById("userLink");
 let signOut = document.getElementById("signOut");
 let welcome = document.getElementById("welcome");
 let signedIn = document.getElementById("signedIn");
-let dataCollection = document.getElementById("showcase2");
+let empty = document.getElementById("empty");
 let currentUser = null;
 
 // ----------------------- Get User's Name'Name ------------------------------
@@ -150,21 +150,16 @@ window.onload = function() {
   console.log(window.document.location.pathname);
   getUsername();
   if(currentUser == null) {
-    userLink.innerText = "Create New Account"
-    userLink.classList.replace("nav-link", "btn")
-    userLink.classList.add("btn-warning")
-    userLink.href = "signIn.html"
 
-    signOut.innerText = "Sign In"
+    signOut.innerText = "Sign In / Register"
     signOut.classList.replace("nav-link", "btn")
     signOut.classList.add("btn-danger")
     signOut.href = "signIn.html"
   } else {
-    console.log(currentUser)
-    userLink.classList.replace("btn", "nav-link")
-    userLink.classList.remove("btn-warning")
-    userLink.innerText = currentUser.firstName;
-    userLink.href = "#"
+    empty.insertAdjacentHTML('afterend', `
+    <li class="nav-item hover-underline-animation">
+      <a id="userLink" class="nav-link" href=""><strong>${currentUser.firstName}</strong></a>
+    </li>`)
 
     signOut.classList.replace("btn", "nav-link")
     signOut.classList.remove("btn-danger")
